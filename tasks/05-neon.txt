@@ -1,0 +1,12 @@
+Zadanie 5
+1. Zaimplementować następujące funkcje w C:
+- funkcja dodająca do siebie dwa wektory 8 elementowe uint8_t,
+- funkcja jak wyżej tylko z użyciem instrukcji NEON,
+- funkcja mnożąca przez siebie dwa wektory 8 elementowe uint8_t,
+- funkcja jak wyżej tylko z użyciem instrukcji NEON,
+2. Zaimplementować funkcję konwertującą obraz kolorowy na obraz w skali szarości z wykorzystaniem NEON.
+3. Zaimplementować funkcję fitrującą obraz w skali szarości za pomocą NEON.
+
+Uwagi:
+1. Nienależy korzystać z gotowych bibliotek, poza bibliotekami systemowymi.
+2. Można korzystać z dowolnych materiałów.

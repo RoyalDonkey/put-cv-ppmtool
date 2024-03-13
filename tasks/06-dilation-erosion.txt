@@ -1,0 +1,11 @@
+Zadanie 6
+1. Napisać program, który będzie wykonywał dylację i erozję na dwukolorowym obrazie. Plikiem wejściowym powinien być kolory obraz w formacie PPM a wynikowym PBM. Przy realizacji należy zastosować wcześniej przygotowane funkcje w C.
+2. Linia poleceń powinna posiadać 4 dane wejściowe:
+- wybrane działanie,
+- siła oddziaływania funkcji,
+- nazwę pliku wejściowego,
+- nazwę pliku wyjściowego.
+
+Uwagi:
+1. Nienależy korzystać z gotowych bibliotek, poza bibliotekami systemowymi.
+2. Można korzystać z dowolnych materiałów.
