@@ -118,6 +118,18 @@ int ppm_write(const struct ppm_image *img, const char *fpath)
 	return 0;
 }
 
+void ppm_map(struct ppm_image *img, void (*map)(struct ppm_pixel*))
+{
+	assert(img != NULL);
+	assert(map != NULL);
+
+	for (size_t y = 0; y < img->h; y++) {
+		for (size_t x = 0; x < img->w; x++) {
+			map(&img->pixels[y * img->w + x]);
+		}
+	}
+}
+
 void ppm_free(struct ppm_image *img)
 {
 	assert(img != NULL);
@@ -256,4 +268,22 @@ void pgm_free(struct pgm_image *img)
 		free(img->pixels);
 	}
 	free(img);
+}
+
+void ppm_pixel_to_gray_avg(struct ppm_pixel *pix)
+{
+	assert(pix != NULL);
+	u16 avg = 0.5 + ((pix->r + pix->g + pix->b) / 3.0);
+	pix->r = avg;
+	pix->g = avg;
+	pix->b = avg;
+}
+
+void ppm_pixel_to_gray_weighted(struct ppm_pixel *pix)
+{
+	assert(pix != NULL);
+	u16 avg = 0.5 + (0.35 * pix->r + 0.5 * pix->g + 0.15 * pix->b);
+	pix->r = avg;
+	pix->g = avg;
+	pix->b = avg;
 }

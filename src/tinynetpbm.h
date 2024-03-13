@@ -42,6 +42,9 @@ struct ppm_image *ppm_read(const char *fpath);
 /* Writes a PPM image into a file. */
 int ppm_write(const struct ppm_image *img, const char *fpath);
 
+/* Apply a map function to each pixel in a PPM image. */
+void ppm_map(struct ppm_image *img, void (*map)(struct ppm_pixel*));
+
 /* Free a PPM image from memory. */
 void ppm_free(struct ppm_image *img);
 
@@ -64,5 +67,16 @@ int pgm_write(const struct pgm_image *img, const char *fpath);
 
 /* Free a PGM image from memory. */
 void pgm_free(struct pgm_image *img);
+
+
+/****************************/
+/*     PIXEL FUNCTIONS      */
+/****************************/
+
+/* Converts a PPM pixel to grayscale using a simple average. */
+void ppm_pixel_to_gray_avg(struct ppm_pixel *pix);
+
+/* Converts a PPM pixel to grayscale using a weighted average. */
+void ppm_pixel_to_gray_weighted(struct ppm_pixel *pix);
 
 #endif /* TINYNETPBM_H */
