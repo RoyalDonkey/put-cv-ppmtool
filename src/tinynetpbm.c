@@ -73,6 +73,11 @@ struct ppm_image *ppm_read(const char *fpath)
 				fread(&dest->r, 2, 1, f);
 				fread(&dest->g, 2, 1, f);
 				fread(&dest->b, 2, 1, f);
+				if (host_is_little_endian()) {
+					dest->r = u16_to_other_endian(dest->r);
+					dest->g = u16_to_other_endian(dest->g);
+					dest->b = u16_to_other_endian(dest->b);
+				}
 			}
 		}
 	}
@@ -97,19 +102,25 @@ int ppm_write(const struct ppm_image *img, const char *fpath)
 	if (img->maxval < 256) {
 		for (size_t y = 0; y < img->h; y++) {
 			for (size_t x = 0; x < img->w; x++) {
-				struct ppm_pixel *const src = &img->pixels[y * img->w + x];
-				fwrite(&src->r, 1, 1, f);
-				fwrite(&src->g, 1, 1, f);
-				fwrite(&src->b, 1, 1, f);
+				struct ppm_pixel *const pix = &img->pixels[y * img->w + x];
+				u8 src = pix->r; /* Let C handle u16->u8 conversion */
+				fwrite(&src, 1, 1, f);
+				src = pix->g;
+				fwrite(&src, 1, 1, f);
+				src = pix->b;
+				fwrite(&src, 1, 1, f);
 			}
 		}
 	} else {
 		for (size_t y = 0; y < img->h; y++) {
 			for (size_t x = 0; x < img->w; x++) {
-				struct ppm_pixel *const src = &img->pixels[y * img->w + x];
-				fwrite(&src->r, 2, 1, f);
-				fwrite(&src->g, 2, 1, f);
-				fwrite(&src->b, 2, 1, f);
+				struct ppm_pixel *const pix = &img->pixels[y * img->w + x];
+				u16 src = host_is_little_endian() ? u16_to_other_endian(pix->r) : pix->r;
+				fwrite(&src, 2, 1, f);
+				src = host_is_little_endian() ? u16_to_other_endian(pix->g) : pix->g;
+				fwrite(&src, 2, 1, f);
+				src = host_is_little_endian() ? u16_to_other_endian(pix->b) : pix->b;
+				fwrite(&src, 2, 1, f);
 			}
 		}
 	}
@@ -199,6 +210,9 @@ struct pgm_image *pgm_read(const char *fpath)
 			for (size_t x = 0; x < img->w; x++) {
 				u16 *const dest = &img->pixels[y * img->w + x];
 				fread(dest, 2, 1, f);
+				if (host_is_little_endian()) {
+					*dest = u16_to_other_endian(*dest);
+				}
 			}
 		}
 	}
@@ -244,14 +258,16 @@ int pgm_write(const struct pgm_image *img, const char *fpath)
 	if (img->maxval < 256) {
 		for (size_t y = 0; y < img->h; y++) {
 			for (size_t x = 0; x < img->w; x++) {
-				u16 *const src = &img->pixels[y * img->w + x];
+				u16 *const pix = &img->pixels[y * img->w + x];
+				u8 src = (u8)(*pix); /* Let C handle u16->u8 conversion */
 				fwrite(&src, 1, 1, f);
 			}
 		}
 	} else {
 		for (size_t y = 0; y < img->h; y++) {
 			for (size_t x = 0; x < img->w; x++) {
-				u16 *const src = &img->pixels[y * img->w + x];
+				u16 *const pix = &img->pixels[y * img->w + x];
+				u16 src = host_is_little_endian() ? u16_to_other_endian(*pix) : *pix;
 				fwrite(&src, 2, 1, f);
 			}
 		}

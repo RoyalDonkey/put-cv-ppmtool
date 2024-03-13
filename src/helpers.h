@@ -37,4 +37,7 @@ void *malloc_or_die(size_t nbytes);
 /* Checks if the host system is little-endian. */
 bool host_is_little_endian(void);
 
+/* Converts an u16 to the other endianess. */
+u16 u16_to_other_endian(u16 num);
+
 #endif /* HELPERS_H */
