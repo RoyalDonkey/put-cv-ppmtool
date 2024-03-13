@@ -1,0 +1,68 @@
+#ifndef TINYNETPBM_H
+#define TINYNETPBM_H
+
+#include <stdlib.h>
+#include "helpers.h"
+
+/* Magic numbers at the start of NetPBM files. */
+#define PPM_MAGIC "P6"
+#define PGM_MAGIC "P5"
+
+/* A single pixel of a PPM image. */
+struct ppm_pixel {
+	u16 r;
+	u16 g;
+	u16 b;
+};
+
+/* A PPM image. */
+struct ppm_image {
+	size_t w;
+	size_t h;
+	u16 maxval;
+	struct ppm_pixel *pixels;
+};
+
+/* A PGM image. */
+struct pgm_image {
+	size_t w;
+	size_t h;
+	u16 maxval;
+	u16 *pixels;
+};
+
+
+/****************************/
+/*      PPM FUNCTIONS       */
+/****************************/
+
+/* Loads a PPM file into memory. */
+struct ppm_image *ppm_read(const char *fpath);
+
+/* Writes a PPM image into a file. */
+int ppm_write(const struct ppm_image *img, const char *fpath);
+
+/* Free a PPM image from memory. */
+void ppm_free(struct ppm_image *img);
+
+
+/****************************/
+/*      PGM FUNCTIONS       */
+/****************************/
+
+/* Loads a PGM file into memory. */
+struct pgm_image *pgm_read(const char *fpath);
+
+/* Creates a PGM image from a PPM image.
+ *
+ * `ppm` must be convertible to PGM, i.e. all its pixels must have equal
+ * rgb values. If that is not the case, this function will fail with `NULL`. */
+struct pgm_image *pgm_from_ppm(const struct ppm_image *ppm);
+
+/* Writes a PGM image into a file. */
+int pgm_write(const struct pgm_image *img, const char *fpath);
+
+/* Free a PGM image from memory. */
+void pgm_free(struct pgm_image *img);
+
+#endif /* TINYNETPBM_H */
