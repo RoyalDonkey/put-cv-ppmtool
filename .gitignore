@@ -3,3 +3,5 @@
 obj/
 compile_commands.json
 ppmtool
+*.ppm
+*.pgm
