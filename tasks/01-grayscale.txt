@@ -1,0 +1,15 @@
+Zadanie 1 
+1. Przygotować kolorowy obrazek o formacie PPM.
+2. Przygotować program w C, który załaduje obrazek do pamięci.
+3. Przygotować procedurę w języku C, które przekonwertuje kolory wczytanego obrazka do skali szarości metodą uśredniającą.
+4. Przygotować procedurę w języku C, które przekonwertuje kolory wczytanego obrazka do skali szarości metodą ważoną.
+5. Zapisać wynik działania powyższych procedur w postaci pliku PGM.
+
+Uwagi:
+1. Nienależy korzystać z gotowych bibliotek, poza bibliotekami systemowymi.
+2. Można korzystać z dowolnych materiałów np. https://www.dynamsoft.com/blog/insights/image-processing/image-processing-101-color-space-conversion/
+3. Program powinien obsługiwać parametry z linii poleceń:
+- pierwszym parametrem jest nazwa pliku do konwersji,
+- drugim parametrem jest nazwa pliku wynikowego.
+4. Program powinien obsługić błędy odczytu i zapisu.
+5. Wybór funkcji konwertującej powinien być na sztywno zapisany w kodzie - brak możliwości wyboru przy wywołaniu z linii poleceń. Można zastosować komentarz na linijce kodu wywołującej drugą procedurę konwersji.

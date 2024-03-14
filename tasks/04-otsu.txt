@@ -1,0 +1,7 @@
+Zadanie 4
+1. Do kody z poprzedniego zadania należy dopisać funkcję progującą obraz metodą Otsu.
+2. Jeżeli chodzi o wywołanie z linii poleceń, to zasady działania pozostają bez zmianę.
+
+Uwagi:
+1. Nienależy korzystać z gotowych bibliotek, poza bibliotekami systemowymi.
+2. Można korzystać z dowolnych materiałów. Przykładowo z materiałów dołączonych do na ekursach.

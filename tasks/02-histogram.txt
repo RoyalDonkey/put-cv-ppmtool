@@ -1,0 +1,8 @@
+Zadanie 2
+1. Do kody z poprzedniego zadania należy dopisać funkcję wyrównująca historgram dla obrazka w skali szarości. Oznacza to, że funkcję należy wywołać po wykonaniu konwersji na skalę szarości.
+2. Dodać kod dla korekcji gamma dla obrazka w skali szarości.
+3. Jeżeli chodzi o wywołanie z linii poleceń, to zasady działania pozostają bez zmian.
+
+Uwagi:
+1. Nienależy korzystać z gotowych bibliotek, poza bibliotekami systemowymi.
+2. Można korzystać z dowolnych materiałów. Przykładowy materiał jest zamieszczony na stronie ekursy pod tytułem "Materiał 2 - Algorytm wyrównywania histogramu".

@@ -2,14 +2,17 @@
 
 > Piotr Kaszubski 148283
 
-A simple command-line tool for manipulating PPM images.
+Solutions to tasks involving manipulation of PPM and PGM files.
+
+All tasks are defined in the `tasks/` directory. Solutions to each task are
+progressively developed and stored in git history. For example, solution to the
+first task will be in a commit tagged `task1`.
 
 ## Building (Linux)
 
-Run the following:
+Firstly, run `git checkout task<N>` to navigate to the correct program. Then,
+simply run:
 
     make
 
-## Features
-
-*work in progress*
+The executable file named `ppmtool` will be created.

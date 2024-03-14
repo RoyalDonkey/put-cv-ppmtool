@@ -1,0 +1,7 @@
+Zadanie 3
+1. Do kody z poprzedniego zadania należy dopisać funkcję filtrującą obrazek w skali szarości. Oznacza to, że funkcję należy wywołać po wykonaniu konwersji na skalę szarości i/lub po wykonaniu innych funkcji np. wyrównaniu histogramu.
+2. Jeżeli chodzi o wywołanie z linii poleceń, to zasady działania pozostają bez zmianę.
+
+Uwagi:
+1. Nienależy korzystać z gotowych bibliotek, poza bibliotekami systemowymi.
+2. Można korzystać z dowolnych materiałów. Przykładowy materiał https://sbme-tutorials.github.io/2018/cv/notes/4_week4.html.
