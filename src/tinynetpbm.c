@@ -94,6 +94,10 @@ int ppm_write(const struct ppm_image *img, const char *fpath)
 	assert(fpath != NULL);
 
 	FILE *f = fopen(fpath, "wb");
+	if (f == NULL) {
+		INFO("failed to open '%s' for writing: %s", fpath, strerror(errno));
+		return 2;
+	}
 	if (0 > fprintf(f, PPM_MAGIC"\n%"PRIuPTR" %"PRIuPTR"\n%"PRIu16"\n", img->w, img->h, img->maxval)) {
 		INFO("failed to write to '%s': %s", fpath, strerror(errno));
 		return 1;
@@ -250,6 +254,10 @@ int pgm_write(const struct pgm_image *img, const char *fpath)
 	assert(fpath != NULL);
 
 	FILE *f = fopen(fpath, "wb");
+	if (f == NULL) {
+		INFO("failed to open '%s' for writing: %s", fpath, strerror(errno));
+		return 2;
+	}
 	if (0 > fprintf(f, PGM_MAGIC"\n%"PRIuPTR" %"PRIuPTR"\n%"PRIu16"\n", img->w, img->h, img->maxval)) {
 		INFO("failed to write to '%s': %s", fpath, strerror(errno));
 		return 1;
