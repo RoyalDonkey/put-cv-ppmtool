@@ -5,7 +5,7 @@
 int main(int argc, char **argv)
 {
 	if (argc != 3) {
-		INFO("Exactly 2 arguments expected (input, output)%s", "");
+		INFO("exactly 2 arguments expected (input, output)%s", "");
 		return 1;
 	}
 
@@ -14,6 +14,9 @@ int main(int argc, char **argv)
 
 	/* Read PPM file */
 	struct ppm_image *const ppm = ppm_read(fpath_in);
+	if (ppm == NULL) {
+		return 2;
+	}
 
 	/* Convert to grayscale (comment/uncomment and rebuild to change) */
 	ppm_map(ppm, ppm_pixel_to_gray_avg);
@@ -21,8 +24,9 @@ int main(int argc, char **argv)
 
 	/* Store result as PGM file */
 	struct pgm_image *const pgm = pgm_from_ppm(ppm);
-	ppm_write(ppm, "sample_gray.ppm");
-	pgm_write(pgm, fpath_out);
+	if (ppm_write(ppm, fpath_out)) {
+		return 3;
+	}
 
 	/* Cleanup */
 	ppm_free(ppm);
