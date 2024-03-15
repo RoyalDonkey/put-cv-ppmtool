@@ -39,7 +39,7 @@ struct pgm_image {
 /* Loads a PPM file into memory. */
 struct ppm_image *ppm_read(const char *fpath);
 
-/* Writes a PPM image into a file. */
+/* Writes a PPM image into a file. Returns 0 on success. */
 int ppm_write(const struct ppm_image *img, const char *fpath);
 
 /* Apply a map function to each pixel in a PPM image. */
@@ -62,7 +62,7 @@ struct pgm_image *pgm_read(const char *fpath);
  * rgb values. If that is not the case, this function will fail with `NULL`. */
 struct pgm_image *pgm_from_ppm(const struct ppm_image *ppm);
 
-/* Writes a PGM image into a file. */
+/* Writes a PGM image into a file. Returns 0 on success. */
 int pgm_write(const struct pgm_image *img, const char *fpath);
 
 /* Free a PGM image from memory. */
