@@ -34,6 +34,9 @@
 /* Mallocs, exits with message in case of failure. */
 void *malloc_or_die(size_t nbytes);
 
+/* Callocs, exits with message in case of failure. */
+void *calloc_or_die(size_t nbytes);
+
 /* Checks if the host system is little-endian. */
 bool host_is_little_endian(void);
 

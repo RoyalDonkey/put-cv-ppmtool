@@ -13,6 +13,16 @@ void *malloc_or_die(size_t nbytes)
 	return buf;
 }
 
+void *calloc_or_die(size_t nbytes)
+{
+	void *const buf = calloc(nbytes, 1);
+	if (buf == NULL) {
+		INFO("failed to allocate memory: %s", strerror(errno));
+		exit(1);
+	}
+	return buf;
+}
+
 bool host_is_little_endian(void)
 {
 	volatile uint_fast16_t x = 1;
