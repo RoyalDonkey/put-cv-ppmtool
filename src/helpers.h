@@ -31,6 +31,10 @@
 	fputc('\n', stderr); \
 } while (0)
 
+#define MAX(A, B) ((A) >= (B) ? (A) : (B))
+#define MIN(A, B) ((A) <= (B) ? (A) : (B))
+#define CLAMP(X, A, B) MIN(MAX(A, X), B)
+
 /* Mallocs, exits with message in case of failure. */
 void *malloc_or_die(size_t nbytes);
 
