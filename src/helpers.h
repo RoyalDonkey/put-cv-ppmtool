@@ -15,6 +15,9 @@
 #define u32 uint32_t
 #define u64 uint64_t
 
+/* Math epsilon for comparing floating-point values to 0. */
+#define MATH_EPS 0.000001
+
 /* User-level logging */
 #define INFO(fmt, ...) do { \
 	fprintf(stderr, "ppmtool: " fmt, __VA_ARGS__); \
@@ -31,8 +34,15 @@
 	fputc('\n', stderr); \
 } while (0)
 
+#define MAX(A, B) ((A) >= (B) ? (A) : (B))
+#define MIN(A, B) ((A) <= (B) ? (A) : (B))
+#define CLAMP(X, A, B) MIN(MAX(A, X), B)
+
 /* Mallocs, exits with message in case of failure. */
 void *malloc_or_die(size_t nbytes);
+
+/* Callocs, exits with message in case of failure. */
+void *calloc_or_die(size_t nbytes);
 
 /* Checks if the host system is little-endian. */
 bool host_is_little_endian(void);

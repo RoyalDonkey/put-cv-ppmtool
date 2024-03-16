@@ -65,9 +65,14 @@ struct pgm_image *pgm_from_ppm(const struct ppm_image *ppm);
 /* Writes a PGM image into a file. Returns 0 on success. */
 int pgm_write(const struct pgm_image *img, const char *fpath);
 
+/* Performs histogram equalization of a PGM image. */
+void pgm_histogram_equalize(struct pgm_image *img);
+
+/* Applies gamma correction to a PGM image. */
+void pgm_gamma_correction(struct pgm_image *img, double gamma);
+
 /* Free a PGM image from memory. */
 void pgm_free(struct pgm_image *img);
-
 
 /****************************/
 /*     PIXEL FUNCTIONS      */

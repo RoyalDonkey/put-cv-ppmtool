@@ -22,8 +22,14 @@ int main(int argc, char **argv)
 	ppm_map(ppm, ppm_pixel_to_gray_avg);
 	/* ppm_map(ppm, ppm_pixel_to_gray_weighted); */
 
-	/* Store result as PGM file */
+	/* Convert to PGM file */
 	struct pgm_image *const pgm = pgm_from_ppm(ppm);
+
+	/* Equalize histogram / Gamma correction (comment/uncomment/adjust here) */
+	pgm_histogram_equalize(pgm);
+	pgm_gamma_correction(pgm, 1.25);
+
+	/* Write the result */
 	if (pgm_write(pgm, fpath_out)) {
 		return 3;
 	}
