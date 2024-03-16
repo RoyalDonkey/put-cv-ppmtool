@@ -24,7 +24,7 @@ int main(int argc, char **argv)
 
 	/* Store result as PGM file */
 	struct pgm_image *const pgm = pgm_from_ppm(ppm);
-	if (ppm_write(ppm, fpath_out)) {
+	if (pgm_write(pgm, fpath_out)) {
 		return 3;
 	}
 
