@@ -285,6 +285,64 @@ int pgm_write(const struct pgm_image *img, const char *fpath)
 	return 0;
 }
 
+void pgm_histogram_equalize(struct pgm_image *img)
+{
+	assert(img != NULL);
+
+	/* Allocate needed memory */
+	u64 *hist = calloc_or_die((img->maxval + 1) * sizeof(u64));
+	u16 *new_levels = malloc_or_die((img->maxval + 1) * sizeof(u16));
+
+	/* Count no. pixels of each intensity (histogram) */
+	for (size_t y = 0; y < img->h; y++) {
+		for (size_t x = 0; x < img->w; x++) {
+			const u16 pix = img->pixels[y * img->w + x];
+			assert(hist[pix] != INT64_MAX);
+			hist[pix]++;
+		}
+	}
+
+	/* Find minimal intensity value present in img */
+	u32 min_pix_value = UINT32_MAX; /* Sentinel value higher than img->maxval */
+	for (size_t val = 0; val <= img->maxval; val++) {
+		if (hist[val] > 0) {
+			min_pix_value = val;
+			break;
+		}
+	}
+	if (min_pix_value > img->maxval) {
+		ERROR_L("image empty or something went horribly wrong%s", "");
+		return;
+	}
+
+	/* Convert to cumulative histogram */
+	for (size_t val = 1; val <= img->maxval; val++) {
+		hist[val] += hist[val - 1];
+	}
+
+	/* Number of occurrences of the minimal intensity value */
+	const u16 h_min = hist[min_pix_value];
+
+	/* Compute new levels (maps old intensity levels to new ones) */
+	for (size_t val = 0; val <= img->maxval; val++) {
+		new_levels[val] = 0.5 /* Rounding term */ + (
+			(double)(hist[val] - h_min)
+			/ (img->w * img->h - h_min)
+			* img->maxval
+		);
+	}
+	free(hist);
+
+	/* Apply new levels */
+	for (size_t y = 0; y < img->h; y++) {
+		for (size_t x = 0; x < img->w; x++) {
+			u16 *const pix = &img->pixels[y * img->w + x];
+			*pix = new_levels[*pix];
+		}
+	}
+	free(new_levels);
+}
+
 void pgm_free(struct pgm_image *img)
 {
 	assert(img != NULL);
