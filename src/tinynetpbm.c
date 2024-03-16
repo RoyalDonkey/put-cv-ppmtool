@@ -6,6 +6,7 @@
 #include <string.h>
 #include <inttypes.h>
 #include <assert.h>
+#include <math.h>
 
 struct ppm_image *ppm_read(const char *fpath)
 {
@@ -341,6 +342,19 @@ void pgm_histogram_equalize(struct pgm_image *img)
 		}
 	}
 	free(new_levels);
+}
+
+void pgm_gamma_correction(struct pgm_image *img, double gamma)
+{
+	assert(img != NULL);
+	assert(fabs(gamma) >= MATH_EPS);
+
+	for (size_t y = 0; y < img->h; y++) {
+		for (size_t x = 0; x < img->w; x++) {
+			u16 *const pix = &img->pixels[y * img->w + x];
+			*pix = CLAMP(pow(*pix, 1. / gamma), 0, img->maxval);
+		}
+	}
 }
 
 void pgm_free(struct pgm_image *img)

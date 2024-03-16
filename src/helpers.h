@@ -15,6 +15,9 @@
 #define u32 uint32_t
 #define u64 uint64_t
 
+/* Math epsilon for comparing floating-point values to 0. */
+#define MATH_EPS 0.000001
+
 /* User-level logging */
 #define INFO(fmt, ...) do { \
 	fprintf(stderr, "ppmtool: " fmt, __VA_ARGS__); \
