@@ -306,7 +306,7 @@ void ppm_pixel_to_gray_avg(struct ppm_pixel *pix)
 void ppm_pixel_to_gray_weighted(struct ppm_pixel *pix)
 {
 	assert(pix != NULL);
-	u16 avg = 0.5 + (0.35 * pix->r + 0.5 * pix->g + 0.15 * pix->b);
+	u16 avg = 0.5 + (0.299 * pix->r + 0.587 * pix->g + 0.114 * pix->b);
 	pix->r = avg;
 	pix->g = avg;
 	pix->b = avg;
