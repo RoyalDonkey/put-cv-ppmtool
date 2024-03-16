@@ -25,8 +25,9 @@ int main(int argc, char **argv)
 	/* Convert to PGM file */
 	struct pgm_image *const pgm = pgm_from_ppm(ppm);
 
-	/* Equalize histogram */
+	/* Equalize histogram / Gamma correction (comment/uncomment/adjust here) */
 	pgm_histogram_equalize(pgm);
+	pgm_gamma_correction(pgm, 1.25);
 
 	/* Write the result */
 	if (pgm_write(pgm, fpath_out)) {
