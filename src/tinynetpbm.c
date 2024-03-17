@@ -357,6 +357,70 @@ void pgm_gamma_correction(struct pgm_image *img, double gamma)
 	}
 }
 
+int pgm_convolve(struct pgm_image *img, const double *kernel, size_t kernel_w, size_t kernel_h)
+{
+	assert(img != NULL);
+	assert(kernel != NULL);
+	assert(kernel_w % 2 == 1);
+	assert(kernel_h % 2 == 1);
+
+	/* Image output */
+	u16 *const new_pixels = calloc_or_die(img->w * img->h * sizeof(u16));
+
+	/* Kernel width and height offsets from the "center" */
+	const size_t kwo = kernel_w / 2;
+	const size_t kho = kernel_h / 2;
+
+        /* Technically not a needed assumption, but it makes convolution logic
+         * much easier, for the price of not handling absurdly large
+         * images/kernels that probably wouldn't fit into RAM anyway. */
+        if (img->w > SIZE_MAX - kwo || img->h > SIZE_MAX - kho) {
+		INFO("image or kernel too big (sum of image and kernel dimensions must be < %zu)", SIZE_MAX);
+		return 1;
+	}
+
+	for (size_t y = 0; y < img->h; y++) {
+		for (size_t x = 0; x < img->w; x++) {
+			double sum = 0.0;
+			size_t n_components = 0;
+			for (size_t k_y = 0; k_y < kernel_h; k_y++) {
+				for (size_t k_x = 0; k_x < kernel_w; k_x++) {
+					/* Check if the kernel pixel if within the image:
+					*       y - kho + k_y >= 0     && x - kwo + k_x >= 0
+					*       y - kho + k_y < img->h && x - kwo + k_x < img->w
+					* To safely test these inequalities, a decomposition is needed:
+					*       y - kho + k_y >= 0     <=> y + k_y >= kho <=> (y >= kho || k_y >= kho - y)
+					*       y - kho + k_y < img->h <=> y + k_y < img->h + kho <=>
+					*           <=> (y < img->h + kho && k_y < img->h + kho - y)
+					*               (for convenience consider img->h + kho > SIZE_MAX illegal)
+					*       (analogically for x, kwo and k_x)
+					*/
+					if ((y < kho && k_y < kho - y) || (x < kwo && k_x < kwo - x)
+					|| (y >= img->h + kho || k_y >= img->h + kho - y)
+					|| (x >= img->w + kwo || k_x >= img->w + kwo - x)) {
+						continue;
+					}
+
+
+					/* Add the product of kernel and auxiliary pixel values */
+					const double kval = kernel[k_y * kernel_w + k_x];
+					const u16 aux_pix = img->pixels[(y - kho + k_y) * img->w + (x - kwo + k_x)];
+					sum += kval * aux_pix;
+					n_components++;
+				}
+			}
+
+			new_pixels[y * img->w + x] = CLAMP(sum / n_components, 0, img->maxval);
+		}
+	}
+
+	/* Replace old image with new */
+	free(img->pixels);
+	img->pixels = new_pixels;
+
+	return 0;
+}
+
 void pgm_free(struct pgm_image *img)
 {
 	assert(img != NULL);
