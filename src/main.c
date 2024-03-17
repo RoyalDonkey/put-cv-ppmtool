@@ -29,6 +29,16 @@ int main(int argc, char **argv)
 	pgm_histogram_equalize(pgm);
 	pgm_gamma_correction(pgm, 1.25);
 
+	/* Apply Ricker ("mexican hat") filter */
+	const double kernel[] = {
+		 0,  0, -1,   0,  0,
+		 0, -1, -2,  -1,  0,
+		-1, -2,  16, -2, -1,
+		 0, -1, -2,  -1,  0,
+		 0,  0, -1,   0,  0,
+	};
+	pgm_convolve(pgm, kernel, 5, 5);
+
 	/* Write the result */
 	if (pgm_write(pgm, fpath_out)) {
 		return 3;

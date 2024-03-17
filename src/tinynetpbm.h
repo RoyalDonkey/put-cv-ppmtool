@@ -71,6 +71,22 @@ void pgm_histogram_equalize(struct pgm_image *img);
 /* Applies gamma correction to a PGM image. */
 void pgm_gamma_correction(struct pgm_image *img, double gamma);
 
+/* Applies a convolution of a kernel over a PGM image. Returns 0 on success.
+ *
+ * `kernel` is a pointer to a 1d array containing `kernel_h` rows of `kernel_w`
+ * numbers. `kernel_h` and `kernel_w` must be non-0, odd numbers.
+ *
+ * Examples:
+ *     1 2 3
+ *     4 5 6  =>  `pgm_apply_kernel(img, {1, 2, 3, 4, 5, 6, 7, 8, 9}, 3, 3)`
+ *     7 8 9
+ *
+ *     1 2
+ *     3 4    =>   `pgm_apply_kernel(img, {1, 2, 3, 4, 5, 6}, 2, 3)`
+ *     5 6
+ */
+int pgm_convolve(struct pgm_image *img, const double *kernel, size_t kernel_w, size_t kernel_h);
+
 /* Free a PGM image from memory. */
 void pgm_free(struct pgm_image *img);
 
