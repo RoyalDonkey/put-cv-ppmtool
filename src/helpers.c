@@ -54,3 +54,21 @@ double var(const double *nums, size_t len)
 
 	return var / len;
 }
+
+void partition(const double *nums, size_t nums_len, double t, double *le, size_t *le_len, double *gt, size_t *gt_len)
+{
+	assert(nums != NULL);
+	assert(le != NULL);
+	assert(le_len != NULL);
+	assert(gt != NULL);
+	assert(gt_len != NULL);
+	*le_len = 0;
+	*gt_len = 0;
+	for (size_t i = 0; i < nums_len; i++) {
+		if (nums[i] <= t) {
+			le[*le_len++] = nums[i];
+		} else {
+			gt[*gt_len++] = nums[i];
+		}
+	}
+}

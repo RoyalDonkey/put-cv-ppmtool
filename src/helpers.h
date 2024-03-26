@@ -53,4 +53,17 @@ u16 u16_to_other_endian(u16 num);
 /* Computes variance of a series of numbers. */
 double var(const double *nums, size_t len);
 
+/* Partitions numbers into 2 sets, x <= threshold and x > threshold.
+ *
+ * - `nums`: the numbers to partition (input),
+ * - `nums_len`: the length of `nums` (input),
+ * - `t`: threshold (input),
+ * - `le`: buffer for numbers less-than-or-equal to `t` (output),
+ * - `le_len`: the length of `le` (output)
+ * - `gt`: buffer for numbers greater-than `t` (output),
+ * - `gt_len`: the length of `gt` (output)
+ *
+ *  `le` and `gt` buffers must be preallocated and not smaller than `nums`. */
+void partition(const double *nums, size_t nums_len, double t, double *le, size_t *le_len, double *gt, size_t *gt_len);
+
 #endif /* HELPERS_H */

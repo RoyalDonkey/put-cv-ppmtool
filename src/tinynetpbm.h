@@ -90,6 +90,9 @@ void pgm_gamma_correction(struct pgm_image *img, double gamma);
  */
 int pgm_convolve(struct pgm_image *img, const double *kernel, size_t kernel_w, size_t kernel_h);
 
+/* Applies Otsu's threshold detection on a PGM image. */
+void pgm_otsu_threshold(struct pgm_image *img);
+
 /* Free a PGM image from memory. */
 void pgm_free(struct pgm_image *img);
 

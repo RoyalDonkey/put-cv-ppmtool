@@ -39,6 +39,8 @@ int main(int argc, char **argv)
 	};
 	pgm_convolve(pgm, kernel, 5, 5);
 
+	pgm_otsu_threshold(pgm);
+
 	/* Write the result */
 	if (pgm_write(pgm, fpath_out)) {
 		return 3;

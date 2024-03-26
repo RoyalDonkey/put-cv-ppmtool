@@ -429,6 +429,48 @@ int pgm_convolve(struct pgm_image *img, const double *kernel, size_t kernel_w, s
 	return 0;
 }
 
+void pgm_otsu_threshold(struct pgm_image *img)
+{
+	assert(img != NULL);
+
+	u64 *const hist = pgm_compute_histogram(img);
+
+        /* Convert u64 histogram to double probabilities, in-place.
+         * This is a bit hacky, but it avoids allocating memory. */
+        assert(sizeof(u64) >= sizeof(double));
+	double *const hist_p = (double*)hist;
+	const size_t n_pixels = img->w * img->h;
+	for (size_t i = 0; i <= img->maxval; i++) {
+		hist_p[i] = (double)hist[i] / n_pixels;
+	}
+
+	/* Variance and probabilities of foreground and background pixels */
+	double *const var_fg = calloc_or_die(img->maxval * sizeof(double));
+	double *const var_bg = calloc_or_die(img->maxval * sizeof(double));
+	double *const p_fg = calloc_or_die(img->maxval * sizeof(double));
+	double *const p_bg = calloc_or_die(img->maxval * sizeof(double));
+
+	/* Aux buffers for partitioning into <= and > level values */
+	double *const lt = malloc_or_die((img->maxval + 1) * sizeof(double));
+	double *const gt = malloc_or_die((img->maxval + 1) * sizeof(double));
+	for (size_t i = 0; i < img->maxval; i++) {
+		/* Partitioning could be made more efficient by implementing
+		* a dedicated structure where histogram intensities are sorted,
+		* but ain't anybody got time for that. */
+		const double t = (double)i / n_pixels;
+		size_t lt_len, gt_len;
+		partition(hist_p, img->maxval + 1, t, lt, &lt_len, gt, &gt_len);
+	}
+	free(lt);
+	free(gt);
+
+	free(var_fg);
+	free(var_bg);
+	free(p_fg);
+	free(p_bg);
+	free(hist);
+}
+
 void pgm_free(struct pgm_image *img)
 {
 	assert(img != NULL);
