@@ -286,15 +286,12 @@ int pgm_write(const struct pgm_image *img, const char *fpath)
 	return 0;
 }
 
-void pgm_histogram_equalize(struct pgm_image *img)
+u64 *pgm_compute_histogram(const struct pgm_image *img)
 {
 	assert(img != NULL);
+	u64 *const hist = calloc_or_die((img->maxval + 1) * sizeof(u64));
 
-	/* Allocate needed memory */
-	u64 *hist = calloc_or_die((img->maxval + 1) * sizeof(u64));
-	u16 *new_levels = malloc_or_die((img->maxval + 1) * sizeof(u16));
-
-	/* Count no. pixels of each intensity (histogram) */
+	/* Count no. pixels of each intensity */
 	for (size_t y = 0; y < img->h; y++) {
 		for (size_t x = 0; x < img->w; x++) {
 			const u16 pix = img->pixels[y * img->w + x];
@@ -302,6 +299,17 @@ void pgm_histogram_equalize(struct pgm_image *img)
 			hist[pix]++;
 		}
 	}
+
+	return hist;
+}
+
+void pgm_histogram_equalize(struct pgm_image *img)
+{
+	assert(img != NULL);
+
+	/* Allocate needed memory */
+	u16 *new_levels = malloc_or_die((img->maxval + 1) * sizeof(u16));
+	u64 *const hist = pgm_compute_histogram(img);
 
 	/* Find minimal intensity value present in img */
 	u32 min_pix_value = UINT32_MAX; /* Sentinel value higher than img->maxval */

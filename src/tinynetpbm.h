@@ -65,6 +65,9 @@ struct pgm_image *pgm_from_ppm(const struct ppm_image *ppm);
 /* Writes a PGM image into a file. Returns 0 on success. */
 int pgm_write(const struct pgm_image *img, const char *fpath);
 
+/* Computes histogram of a PGM image. */
+u64 *pgm_compute_histogram(const struct pgm_image *img);
+
 /* Performs histogram equalization of a PGM image. */
 void pgm_histogram_equalize(struct pgm_image *img);
 
