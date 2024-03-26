@@ -50,4 +50,7 @@ bool host_is_little_endian(void);
 /* Converts an u16 to the other endianess. */
 u16 u16_to_other_endian(u16 num);
 
+/* Computes variance of a series of numbers. */
+double var(const double *nums, size_t len);
+
 #endif /* HELPERS_H */
